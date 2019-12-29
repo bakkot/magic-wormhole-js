@@ -26,6 +26,20 @@ will receive text.
 These interoperate with the python implementation, so you can receive text sent by `send-demo` using `wormhole receive --only-text 0-wormhole-code` and send text to be received by `receive` using `wormhole send --text example`.
 
 
+## Usage with `npx`
+
+Instead of cloning and installing locally, you can do
+```
+npx magic-wormhole send-demo
+```
+and
+
+```
+npx magic-wormhole receive 0-wormhole-code
+```
+
+anywhere that a modern node and npm is installed.
+
 ## Spake2
 
 Spake2 is not widely implemented. This project uses a [rust implementation](https://github.com/RustCrypto/PAKEs/tree/master/spake2) compiled to [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly).
