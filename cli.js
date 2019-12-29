@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 'use strict';
 
 let rendezvous = require('./lib/rendezvous.js');
