@@ -1,6 +1,6 @@
 # magic-wormhole-js
 
-A JavaScript port of [magic-wormhole](https://github.com/warner/magic-wormhole).
+An unoficial JavaScript port of [magic-wormhole](https://github.com/warner/magic-wormhole).
 
 This gets as far as establishing a secure channel ("Wormohle") between the two parties and sending a simple text message, but does not yet implement the remainder of the [file transfer protocol](https://github.com/warner/magic-wormhole/blob/master/docs/file-transfer-protocol.md). Pull requests welcome!
 

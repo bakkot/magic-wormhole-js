@@ -1,5 +1,7 @@
 {
   "name": "magic-wormhole",
+  "version": "0.0.1",
+  "description": "AN UNOFFICIAL PORT: get things from one computer to another, safely",
   "author": "Kevin Gibbons",
   "scripts": {
     "build": "./build-spake2-wasm.sh",
