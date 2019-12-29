@@ -13,17 +13,17 @@ npm install
 to install dependencies, then
 
 ```
-node send.js
+node cli.js send-demo
 ```
 will send the text "example" using a trivial password and
 
 
 ```
-node receive.js 0-wormhole-code
+node cli.js receive 0-wormhole-code
 ```
 will receive text.
 
-These interoperate with the python implementation, so you can receive text sent by `node send.js` using `wormhole receive --only-text 0-wormhole-code` and send text to be received by `node receive.js` using `wormhole send --text example`.
+These interoperate with the python implementation, so you can receive text sent by `send-demo` using `wormhole receive --only-text 0-wormhole-code` and send text to be received by `receive` using `wormhole send --text example`.
 
 
 ## Spake2

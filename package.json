@@ -1,6 +1,11 @@
 {
   "name": "magic-wormhole",
   "author": "Kevin Gibbons",
+  "scripts": {
+    "build": "./build-spake2-wasm.sh",
+    "clean": "rm -rf spake2-wasm/pkg spake2-wasm/target"
+  },
+  "bin": "./cli.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/bakkot/magic-wormhole-js.git"
@@ -9,13 +14,10 @@
     "url": "https://github.com/bakkot/magic-wormhole-js/issues"
   },
   "license": "Apache-2.0",
-  "scripts": {
-    "build": "./build-spake2-wasm.sh",
-    "clean": "rm -rf spake2-wasm/pkg spake2-wasm/target"
-  },
   "dependencies": {
     "@aws-crypto/hkdf-node": "^1.0.0",
     "tweetnacl": "^1.0.1",
     "ws": "^7.2.1"
-  }
+  },
+  "devDependencies": {}
 }
