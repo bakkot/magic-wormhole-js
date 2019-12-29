@@ -1,4 +1,3 @@
-#!/Users/kevin/.nvm/versions/node/v12.1.0/bin/node
 'use strict';
 
 let rendezvous = require('./lib/rendezvous.js');
