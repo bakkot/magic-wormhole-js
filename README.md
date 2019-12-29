@@ -68,7 +68,7 @@ The overall magic-wormhole protocol for the sender consists of:
 - Establish a channel using the encrypted protocol on top of the channel using the unencrypted protocol using `appId`, `side`, and `password`.
 - Send `("version", Utf8Encode(JsonStringify({"app_version":{}})))` over the channel using the encrypted protocol.
 - Receive a message `theirEncodedVersion` over the channel using the encrypted protocol.
-- Assert: `JsonParse(Utf8Decode(theirEncodedVersion))` is a `JsonObject` with an `app_versions` field (which is in my experience always empty).
+- Assert: `JsonParse(Utf8Decode(theirEncodedVersion))` is a `JsonObject` with an `"app_versions"` field (which is in my experience always empty).
 - ??? [file transfer protocol goes here]
 - Profit
 
@@ -83,7 +83,7 @@ The overall magic-wormhole protocol for the receiver consists of:
 - Establish a channel using the encrypted protocol on top of the channel using the unencrypted protocol using `appId`, `side`, and `password`.
 - Send `("version", Utf8Encode(JsonStringify({"app_version":{}})))` over the channel using the encrypted protocol.
 - Receive a message `theirEncodedVersion` over the channel using the encrypted protocol.
-- Assert: `JsonParse(Utf8Decode(theirEncodedVersion))` is a `JsonObject` with an `app_versions` field (which is in my experience always empty).
+- Assert: `JsonParse(Utf8Decode(theirEncodedVersion))` is a `JsonObject` with an `"app_versions"` field (which is in my experience always empty).
 - ??? [file transfer protocol goes here]
 - Profit
 
@@ -106,7 +106,7 @@ Given
 
 you can establish a channel using the rendezvous protocol as follows:
 
-- Receive a message from the websocket of the form `Utf8Encode(JsonStringify(object))`, where `object` is a `JsonObject` with a `type` key holding the string `"welcome"` and a `welcome` key holding another `JsonObject`. This second object can have the field `"error"`, in which case the connection will terminate.
+- Receive a message from the websocket of the form `Utf8Encode(JsonStringify(object))`, where `object` is a `JsonObject` with a `type` key holding the string `"welcome"` and a `"welcome"` key holding another `JsonObject`. This second object can have the field `"error"`, in which case the connection will terminate.
 
 #### Sending
 
@@ -123,8 +123,8 @@ Once established, you can receive a message `(type, object)` on this channel as 
 
 - Let `bytes` be a message received from the websocket.
 - Let `decoded` be `JsonParse(Utf8Decode(bytes))`.
-- Assert: `decoded` has a `type` field containing a string.
-- Let `type` be the value of the `type` field of `decoded`, and let `other` be the `JsonObject` holding the remaining keys and corresponding values of `decoded`.
+- Assert: `decoded` has a `"type"` field containing a string.
+- Let `type` be the value of the `"type"` field of `decoded`, and let `other` be the `JsonObject` holding the remaining keys and corresponding values of `decoded`.
 - If `type` is `"ack"`, ignore this and do not receive on this channel.
 - Receive `(type, other)` on this channel.
 
@@ -155,7 +155,20 @@ you as the sender can establish a channel using the unencrypted protocol as foll
 
 #### Establishing (receiver side)
 
-- TODO
+Given
+
+- a channel using the rendezvous protocol
+- `appId`, a string identifying the app
+- `side`, a short string whose characters are drawn from `0-9` and `a-f`
+- `nameplate`, a short string obtained out of band from the sender
+
+you as the receiver can establish a channel using the unencrypted protocol as follows:
+
+- Send `("bind", { "appid": appId, "side": side })` on the rendezvous channel.
+- Send `("claim", { "nameplate": nameplate })`.
+- Receive `("claimed", { "mailbox": mailbox })` on the rendezvous channel, where `"mailbox"` is a string.
+- Send `("open", { "mailbox": mailbox })`.
+- Associate `nameplate` with this channel.
 
 #### Sending
 
@@ -169,7 +182,7 @@ Once established, you can send a message `(phase, message)` on this channel as f
 Once established, you can receive a message `(phase, side, message)` on this channel as follows:
 
 - Let `(type, object)` be a message received from the rendezvous channel.
-- Assert: `object` has `phase`, `side`, and `body` fields each containing a string.
+- Assert: `object` has `"phase"`, `"side"`, and `"body"` fields each containing a string.
 - Let `phase` be the value of the `"phase"` field of `object`.
 - Let `side` be the value of the `"side"` field of `object`.
 - Let `body` be the value of the `"body"` field of `object`.
@@ -276,11 +289,11 @@ From a cryptographically secure source, obtain a list of random bytes of length 
 
 Return the [sha256](https://en.wikipedia.org/wiki/SHA-2) digest of the input.
 
-### `HKDF(key: list of bytes, purpose: list of bytes)`
+### `HKDF(key: list of bytes, purpose: list of bytes): list of bytes`
 
 Return the length-32 expansion of `key` using [HKDF](https://en.wikipedia.org/wiki/HKDF) with `purpose` as the `info` and with no salt.
 
-### `DerivePhaseKey(key: list of bytes, side: string, phase: string)`
+### `DerivePhaseKey(key: list of bytes, side: string, phase: string): list of bytes`
 
 This algorithm behaves as follows:
 
@@ -290,10 +303,10 @@ This algorithm behaves as follows:
 - Let `purpose` be the list of bytes given by concatenating `base`, `sideSha`, and `phaseSha`.
 - Return `HKDF(key, purpose)`.
 
-### `MakeSecretBox(plaintext: list of bytes, nonce: list of bytes, phaseKey: list of bytes)`
+### `MakeSecretBox(plaintext: list of bytes, nonce: list of bytes, phaseKey: list of bytes): list of bytes`
 
 Return the result of calling [NaCL](https://nacl.cr.yp.to/secretbox.html)'s `secretbox` method using `plaintext` as the message, `nonce` as the nonce, and `phaseKey` as the key.
 
-### `OpenSecretBox(ciphertext: list of bytes, nonce: list of bytes, phaseKey: list of bytes)`
+### `OpenSecretBox(ciphertext: list of bytes, nonce: list of bytes, phaseKey: list of bytes): list of bytes`
 
 Return the result of calling [NaCL](https://nacl.cr.yp.to/secretbox.html)'s `secretbox_open` method using `ciphertext` as the ciphertext, `nonce` as the nonce, and `phaseKey` as the key.
