@@ -1,8 +1,8 @@
 # magic-wormhole-js
 
-An unofficial JavaScript port of [magic-wormhole](https://github.com/warner/magic-wormhole).
+An WIP, no longer active unofficial JavaScript port of [magic-wormhole](https://github.com/warner/magic-wormhole). I suggest checking out [magic-wormhole.rs](https://github.com/magic-wormhole/magic-wormhole.rs)'s WASM output instead. Or if you just want something you can run with npx, see [magic-wormhole-npm](https://github.com/bakkot/magic-wormhole-npm).
 
-This gets as far as establishing a secure channel ("Wormohle") between the two parties and sending a simple text message, but does not yet implement the remainder of the [file transfer protocol](https://github.com/warner/magic-wormhole/blob/master/docs/file-transfer-protocol.md). Pull requests welcome!
+This gets as far as establishing a secure channel ("Wormohle") between the two parties and sending a simple text message, but does not yet implement the remainder of the [file transfer protocol](https://github.com/warner/magic-wormhole/blob/master/docs/file-transfer-protocol.md).
 
 
 ## Usage
@@ -24,21 +24,6 @@ node cli.js receive 0-wormhole-code
 will receive text.
 
 These interoperate with the python implementation, so you can receive text sent by `send-demo` using `wormhole receive --only-text 0-wormhole-code` and send text to be received by `receive` using `wormhole send --text example`.
-
-
-## Usage with `npx`
-
-Instead of cloning and installing locally, you can do
-```
-npx magic-wormhole send-demo
-```
-and
-
-```
-npx magic-wormhole receive 0-wormhole-code
-```
-
-anywhere that a modern node and npm is installed.
 
 ## Spake2
 
